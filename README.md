@@ -1,6 +1,6 @@
 ##/Sum/:
 **[D]-Jongg** is an experimental 3D puzzle game, written in ~3 days as self-imposed challenge. It entrusts player with rather important task of dismantling giant space cube by removing matching pairs. Mostly reported as casual.  
-**Go get it @** https://slipperyclip.codeplex.com/downloads/get/909020
+**Go get it @** http://gamejolt.com/games/d-jongg/download-distribution/1697/?os=windows
 
 ##/Featurae/:
 -	Shader-powered visual FX to make your body ready.
