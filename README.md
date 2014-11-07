@@ -1,6 +1,6 @@
 ##/Sum/:
 **[D]-Jongg** is an experimental 3D puzzle game, written in ~3 days as self-imposed challenge. It entrusts player with rather important task of dismantling giant space cube by removing matching pairs. Mostly reported as casual.  
-**Slippery Clip** is an experimental 3D puzzle game, written in ~3 days as self-imposed challenge. It entrusts player with rather important task of dismantling giant space cube by removing matching pairs. Mostly reported as casual. is an optimized and portable clipboard management utility, mostly powered by minimalistic GUI with maximum keyboard support in mind. It provides easy-to-use storage mechanism for logging and processing any data sent to clipboard, complete with hotkey-based multipasting functionality.  
+**Slippery Clip** is an optimized and portable clipboard management utility, mostly powered by minimalistic GUI with maximum keyboard support in mind. It provides easy-to-use storage mechanism for logging and processing any data sent to clipboard, complete with hotkey-based multipasting functionality.  
 **Go get it @** https://slipperyclip.codeplex.com/downloads/get/909020
 
 ##/Featurae/:
