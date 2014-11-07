@@ -10,6 +10,6 @@
 ##/Requirements (tested)/:
 **Proc. Unit =>** Pentium 4, 2.0GHz  
 **R.A.M. =>** 2.0GB  
-**Hard Driv e=>** 6MB  
+**Hard Drive =>** 6MB  
 **GCard:** Radeon 9550+  
 **Tech:** DX9, WinXP+, Pixel Shaders 2.0.  
