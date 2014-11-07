@@ -8,8 +8,8 @@
 -	XCopy-based installation. Just because I support that concept so hard.
 
 ##/Requirements (tested)/:
-**Proc. Unit =>** Pentium 4, 2.0GHz  
-**R.A.M. =>** 2.0GB  
-**Hard Drive =>** 6MB  
+**Proc. Unit >=** Pentium 4, 2.0GHz  
+**R.A.M. >=** 2.0GB  
+**Hard Drive >=** 6MB  
 **GCard:** Radeon 9550+  
 **Tech:** DX9, WinXP+, Pixel Shaders 2.0.  
