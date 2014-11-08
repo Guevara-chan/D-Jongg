@@ -6,6 +6,7 @@
 -	Three-state playfield volume selector to test your spirit.
 -	Scientifically-correct cosmic silence to enlighten your mind.
 -	XCopy-based installation. Just because I support that concept so hard.
+-	DirectX automatical updater. To be sure, you know.
 
 ##/Requirements (tested)/:
 **Proc. Unit >=** Pentium 4, 2.0GHz  
