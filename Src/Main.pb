@@ -24,6 +24,8 @@ Prototype FontLoader(FileName.s, Flag, Dummy)
 #ScreenHeight = 600
 #GUIWidth     = #ScreenWidth 
 #GUIHeight    = #ScreenHeight
+#BlurDelay    = 0.1
+#BlurMax      = 0.3
 #GUIRes       = 1024
 #AlphaEdge    = 1
 #AlphaStep    = 0.05
@@ -43,9 +45,8 @@ Prototype FontLoader(FileName.s, Flag, Dummy)
 #EndGame      = 2
 #Hint         = 0.5
 #MainWindow   = 0
+#NearScreen   = 2.4
 #SplashWindow = #MainWindow + 1
-#GUIScaleX    = #GUIWidth / #ScreenWidth
-#GUIScaleY    = #GUIHeight / #ScreenHeight
 #RedistURL    = "http://file1.softsea.com/Driver_Update/dxwebsetup.exe"
 #DBufferSize  = 1024 ; Downloading buffer's size.
 ;}
@@ -140,9 +141,12 @@ ShowHint.i
 FrameTurn.i
 *GUIPlane
 *GUIBuffer
+*BlurPlane
+*BlurBuffer
 GUIAlpha.f
 *PickedButton
 *FrameBuffer
+GUIScale.Point
 MenuButtons.Button[#MenuButtons+1]
 ; -Dices-
 *DiceTex
@@ -179,11 +183,11 @@ Global Dim *DiceMatrix.Dice(#MaxField - 1, #MaxField - 1, #MaxField - 1)
 ;{ Procedures
 ;{ --Math & Logic--
 Macro GSin(Angle) ; Pseudo-procedure
-Sin(Angle * #PI / 180)
+Sin(Radian(Angle))
 EndMacro
 
 Macro GCos(Angle) ; Pseudo-procedure
-Cos(Angle * #PI / 180)
+Cos(Radian(Angle))
 EndMacro
 
 Procedure.f MinF(ValA.f, ValB.f)
@@ -387,6 +391,31 @@ xStretchBackBuffer(System\DiffuseTex, 0, 0, #BloomRes, #BloomRes, 0)
 xSetEffectTechnique(System\PostPoly, "DiffuseV")
 xRenderPostEffect(System\PostPoly)
 EndIf
+EndMacro
+
+Procedure ScreenSprite(FX = #FX_FULLBRIGHT, Order = 0)
+Define *Sprite = xCreateSprite(System\Camera)
+xScaleSprite(*Sprite, #ScreenWidth / #ScreenHeight, 1.0)
+xMoveEntity(*Sprite, 0, 0, #NearScreen)
+xEntityFX(*Sprite, FX) : xEntityOrder(*Sprite, Order)
+ProcedureReturn *Sprite
+EndProcedure
+
+Procedure ScreenTexture(Flag = 0)
+Define X = Pow(2, Round(Log10(#ScreenWidth) / Log10(2), #PB_Round_Up))
+Define Y = Pow(2, Round(Log10(#ScreenHeight) / Log10(2), #PB_Round_Up))
+Define *Tex = xCreateTexture(X, Y, Flag) 
+xScaleTexture(*Tex, X / #ScreenWidth, Y / #ScreenHeight)
+ProcedureReturn *Tex
+EndProcedure
+
+Macro CopyScreen(Src, Target) ; Pseudo-procedure.
+xCopyRect(0, 0, #ScreenWidth, #ScreenHeight, 0, 0, Src, Target)
+EndMacro
+
+Macro UpdateBlur() ; Pseudo-procedure.
+xEntityAlpha(System\BlurPlane, (1 - GSin(System\SinFeeder)) * (#BlurDelay + #BlurMax) - #BlurDelay)
+CopyScreen(xBackBuffer(), xTextureBuffer(System\BlurBuffer))
 EndMacro
 ;}
 ;{ --Input/Ouput--
@@ -860,8 +889,8 @@ EndProcedure
 
 Procedure CheckMenu()
 With System
-Define CX = \MousePos\X * #GUIScaleX
-Define CY = \MousePos\Y * #GUIScaleY
+Define CX = \MousePos\X * System\GUIScale\X
+Define CY = \MousePos\Y * System\GUIScale\Y
 EndWith
 Define I, *Btn.Button
 For I = 0 To #MenuButtons
@@ -964,15 +993,16 @@ xLightColor(System\Light, #Light, #Light, #Light)
 Else : xLightColor(System\Light, #AltLight, #AltLight, #AltLight)
 EndIf
 ; -GUI preparations-
-System\GUIPlane = xCreateSprite(System\Camera)
-xMoveEntity(System\GUIPlane, 0, 0, 2.4) ; Just a guess, may need fine tuning.
-xScaleSprite(System\GUIPlane, 1.0 * (#ScreenWidth / #ScreenHeight), 1.0)
-xEntityOrder(System\GUIPlane, -1)
-xEntityFX(System\GUIPlane, #FX_FULLBRIGHT)
-System\GUIBuffer = xCreateTexture(#GUIRes, #GUIRes, #FLAGS_MASKED)
+xCreateDSS(#GUIRes, #GUIRes)
+System\GUIPlane = ScreenSprite()
+System\GUIBuffer = ScreenTexture(#FLAGS_MASKED)
 xEntityTexture(System\GUIPlane, System\GUIBuffer)
-xScaleTexture(System\GUIBuffer, #GUIRes / #GUIWidth, #GUIRes / #GUIHeight)
-xCreateDSS(#GUIRes, #GUIRes) ; Depth surface for nVidia drivers.
+System\GUIScale\X = xTextureWidth(System\GUIBuffer)  / #GUIWidth
+System\GUIScale\Y = xTextureHeight(System\GUIBuffer) / #GUIHeight
+; -Blur preparations-
+System\BlurPlane = ScreenSprite()
+System\BlurBuffer = ScreenTexture()
+xEntityTexture(System\BlurPlane, System\BlurBuffer)
 ; -Frame buffer preparations-
 System\FrameBuffer = xCreateImage(#ScreenWidth, #ScreenHeight)
 xImageAlpha(System\FrameBuffer, 0.6) ; Darkened frame.
@@ -1106,6 +1136,7 @@ Render3D()
 ; -Cursor render-
 xDrawImage(System\Cursor, System\MousePos\X, System\MousePos\Y, Abs(System\CFrame - #CFrames + 1))
 System\CFrame = (System\CFrame + 1) % (#CFrames * 2 - 2)
+UpdateBlur()
 UpdateScreen()
 EndMacro
 ;} EndMacros
@@ -1122,7 +1153,8 @@ RestoreFrame() ; Pause screen.
 EndIf
 ForEver
 ; IDE Options = PureBasic 5.30 (Windows - x86)
-; Folding = h3-94-4-
+; Folding = h3-3f-f--
+; Markers = 1006
 ; EnableXP
 ; UseIcon = ..\Media\Dice.ico
 ; Executable = ..\[D]-Jongg.exe
