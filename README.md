@@ -16,5 +16,5 @@
 
 ## /Reassembling/:
 **SlipperyClip** is written completely in PureBasic v4.40, though compatible with v5.30.  
-It relies on Xors3D abandonware engine, which is bundled in form of pre-patched DLL.
+It relies on Xors3D abandonware engine, which is bundled in form of pre-patched DLL.  
 To compile project use 'Main.pb' as root sourcefile.  
