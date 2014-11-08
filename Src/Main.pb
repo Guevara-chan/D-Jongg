@@ -1,14 +1,14 @@
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
-; [D]-Jongg v1.0 (Release)
-; Developed in 2010 by Chrono Syndrome.
+; [D]-Jongg v0.7 (Beta/Demo)
+; Developed in 2010 by Guevara-chan.
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
 
-; TODO[
-; Улучшить главное меню.
-; Доработать вращение куба по вертикали.
-; Дожить до правки глюка с нераспознованием щелчков мыши.
+; TO.DO[
+; Добавить неудаляемые кубы для сложности.
+; Доработать вращение куба по вертикали и приблежение\удаление.
 ; Проверить проблемы с автообновлением DirectX под Vist'ой.
-; ]TODO
+; Улучшить главное меню.
+; ]TO.DO
 
 ; --Preparations--
 EnableExplicit
@@ -18,39 +18,38 @@ EndMacro
 Prototype FontLoader(FileName.s, Flag, Dummy)
 
 ;{ Definitions
-; --Constants--
-#Title = "=[D]-Jongg="
+;{ --Constants--
+#Title        = "=[D]-Jongg="
 #ScreenWidth  = 800
 #ScreenHeight = 600
-#GUIWidth  = 800
-#GUIHeight = 600
-#GUIRes = 1024
-#AlphaEdge = 1
-#AlphaStep = 0.05
-#DiceTypes = 6
-#DiceColors = 5
-#MaxField = 8
-#MaxFPS = 40
-#Ambient = 100
-#Light    = 205 - #Ambient
-#AltLight = 240 - #Ambient ; For old videocards.
-#CFrames = 12 ; Число кадров у курсора.
-#FrameEdge = 0.7
-#BloomRes = 256
-#TrayIcon = 0
-#NoButton = -1
-#MaxYAngle = 40
-#EndGame = 2
-#Hint = 0.5
-#MainWindow = 0
+#GUIWidth     = #ScreenWidth 
+#GUIHeight    = #ScreenHeight
+#GUIRes       = 1024
+#AlphaEdge    = 1
+#AlphaStep    = 0.05
+#DiceTypes    = 6
+#DiceColors   = 6
+#MaxField     = 8
+#MaxFPS       = 40
+#Ambient      = 100
+#Light        = 205 - #Ambient
+#AltLight     = 240 - #Ambient ; For old videocards.
+#CFrames      = 12 ; Число кадров у курсора.
+#FrameEdge    = 0.7
+#BloomRes     = 256
+#TrayIcon     = 0
+#NoButton     = -1
+#MaxYAngle    = 40
+#EndGame      = 2
+#Hint         = 0.5
+#MainWindow   = 0
 #SplashWindow = #MainWindow + 1
-#WM_VISIBLITY = #WM_USER + 17
-#GUIScaleX = #GUIWidth / #ScreenWidth
-#GUIScaleY = #GUIHeight / #ScreenHeight
-#RedistURL = "http://file1.softsea.com/Driver_Update/dxwebsetup.exe"
-#DBufferSize = 1024 ; Downloading buffer's size.
-
-; --Enumerations--
+#GUIScaleX    = #GUIWidth / #ScreenWidth
+#GUIScaleY    = #GUIHeight / #ScreenHeight
+#RedistURL    = "http://file1.softsea.com/Driver_Update/dxwebsetup.exe"
+#DBufferSize  = 1024 ; Downloading buffer's size.
+;}
+;{ --Enumerations--
 Enumeration ; Animations
 #aRaising
 #aNormal
@@ -78,8 +77,8 @@ Enumeration ; Pause modes
 #pFocusLost
 #pMessageBox
 EndEnumeration
-
-; --Structures--
+;}
+;{ --Structures--
 Structure Point3D
 X.i : Y.i : Z.i
 EndStructure
@@ -168,16 +167,17 @@ NetFileSize.i
 NetProgress.i
 *NetBuffer
 EndStructure
-
-; --Varibales--
+;}
+;{ --Variables--
 Global System.SystemData
 Global NewList Dices.Dice()
 Global NewList History.Dice()
 Global Dim *DiceMatrix.Dice(#MaxField - 1, #MaxField - 1, #MaxField - 1)
+;}
 ;} EndDefinitions
 
 ;{ Procedures
-; --Math & Logic
+;{ --Math & Logic--
 Macro GSin(Angle) ; Pseudo-procedure
 Sin(Angle * #PI / 180)
 EndMacro
@@ -197,8 +197,8 @@ If ValA > ValB : ProcedureReturn ValA
 Else : ProcedureReturn ValB
 EndIf
 EndProcedure
-
-; --AutoUpdating support--
+;}
+;{ --Autoupdating support--
 Macro WndW(WindowIDX) ; Shortcut.
 WindowWidth(WindowIDX)
 EndMacro
@@ -365,8 +365,8 @@ Define FixDir.s = GetPathPart(ProgramFilename()) ; На случай cmd и тому подобног
 If FixDir <> GetTemporaryDirectory() : SetCurrentDirectory(FixDir) : EndIf
 CheckDXVersion() ; Should be here (fgj).
 InitXors3D() ; For further usage.
-
-; --Render support--
+;}
+;{ --Render support--
 Macro UpdateScreen() ; Pseudo-procedure.
 xFlip() : WaitForSingleObject_(System\FPSTimer, #INFINITE)
 EndMacro
@@ -388,8 +388,8 @@ xSetEffectTechnique(System\PostPoly, "DiffuseV")
 xRenderPostEffect(System\PostPoly)
 EndIf
 EndMacro
-
-; --Input/Ouput--
+;}
+;{ --Input/Ouput--
 Procedure CreateTimer(Period)
 Define Junk.FILETIME, *Timer
 *Timer = CreateWaitableTimer_(#Null, #False, #Null)
@@ -418,11 +418,7 @@ With System
 Define MXSpeed = xMouseXSpeed()
 Define MYSpeed = xMouseZSpeed()
 If xKeyDown(57) : \ShowHint = #True : Else : \ShowHint = #False : EndIf
-; Temporary[
 CheckMouseHit(1, 'Lclk') : CheckMouseHit(2, 'Rclk')
-;If xMouseHit(1)  : ProcedureReturn 'Lclk' : EndIf
-;If xMouseHit(2)  : ProcedureReturn 'Rclk' : EndIf
-; ]Temporary
 RotatorsBlock(203, 205, 200, 208) ; Arrows
 RotatorsBlock(30, 32, 17, 31) ; WASD
 If xKeyHit(1)    : ProcedureReturn 'Exit' : EndIf
@@ -517,8 +513,8 @@ EndMacro
 Macro WindowVisible(Window) ; Pseudo-procedure
 GetWindowState(Window) <> #PB_Window_Minimize And System\State <> #pBossKey
 EndMacro
-
-; --Dicez management--
+;}
+;{ --Dicez management--
 Macro ActualizeDice(Dice = *Dice, DX = *Dice\Pos\X, DY = *Dice\Pos\Y, DZ = *Dice\Pos\Z)
 xEntityPickMode(Dice\Entity, 2, #True)
 xNameEntity(Dice\Entity, Str(Dice))
@@ -685,8 +681,8 @@ If DesiredAngle < 0 : ProcedureReturn MaxF(DesiredAngle, -#MaxYAngle - xEntityPi
 Else : ProcedureReturn MinF(DesiredAngle, #MaxYAngle - xEntityPitch(*Entity))
 EndIf
 EndProcedure
-
-; -GUI management--
+;}
+;{ --GUI management--
 Procedure Choose(*Dice.Dice) ; Pseudo-procedure
 If *Dice
 With System
@@ -825,7 +821,7 @@ EndIf
 Next I
 xDrawImage(System\Logo, #GUIWidth / 2, 100)
 xSetFont(System\MenuFont) : xColor(255, 255, 255)
-xText(#GUIWidth / 2, #GUIHeight - 15, "Developed in 2010 by Chrono Syndrome", 1, 1)
+xText(#GUIWidth / 2, #GUIHeight - 15, "Developed in 2010 by Guevara-chan", 1, 1)
 If System\Bloomer = #Null ; Reminder message for shader-less world.
 xColor(255, 255, 50) : xText(#GUIWidth / 2, 10, "WARNING: NO PS 2.0 SUPPORT FOUND !", 1)
 EndIf
@@ -887,6 +883,7 @@ Macro PrepareGame(FieldSize) ; Pseudo-procedure
 System\AreaSize = FieldSize
 System\State = #sMenuToGame
 EndMacro
+;}
 ;} EndProcedures
 
 ;{ Macros
@@ -925,7 +922,8 @@ System\ColorsTable[0] = $00FF00
 System\ColorsTable[1] = $FFFF00
 System\ColorsTable[2] = $00FFFF
 System\ColorsTable[3] = $FF0078
-System\ColorsTable[4] = $FFFFFF
+System\ColorsTable[4] = $FF70FF
+System\ColorsTable[5] = $FFFFFF
 ; -Scene preparatioins-
 System\Camera = xCreateCamera()
 System\Light = xCreateLight(2)
@@ -1108,12 +1106,11 @@ Render3D()
 ; -Cursor render-
 xDrawImage(System\Cursor, System\MousePos\X, System\MousePos\Y, Abs(System\CFrame - #CFrames + 1))
 System\CFrame = (System\CFrame + 1) % (#CFrames * 2 - 2)
-; ...If you want to change trial timer's font - just set it here...
-; xSetFont(System\MenuFont) ; For example.
 UpdateScreen()
 EndMacro
 ;} EndMacros
 
+; ==Main loop==
 Initialization()
 Repeat : SystemChecks()
 If System\Paused = #pActive
@@ -1125,8 +1122,20 @@ RestoreFrame() ; Pause screen.
 EndIf
 ForEver
 ; IDE Options = PureBasic 5.30 (Windows - x86)
-; Folding = -------
+; Folding = h3-94-4-
 ; EnableXP
 ; UseIcon = ..\Media\Dice.ico
 ; Executable = ..\[D]-Jongg.exe
 ; CurrentDirectory = ..\
+; IncludeVersionInfo
+; VersionField0 = 0,7,0,0
+; VersionField1 = 0,7,0,0
+; VersionField2 = Guevara-chan [~R.i.P]
+; VersionField3 = [D]-Jongg
+; VersionField4 = 0.7
+; VersionField5 = 0.7
+; VersionField6 = [D]-Jongg puzzle
+; VersionField7 = [D]-Jongg
+; VersionField8 = [D]-Jongg.exe
+; VersionField13 = Guevara-chan@Mail.ru
+; VersionField14 = http://vk.com/guevara_chan

@@ -1,9 +1,9 @@
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
-; xors3d's low-level declarations.
-; Converted in 2010 by Chrono Syndrome.
+; Xors3d's low-level declarations.
+; Converted in 2010 by Guevara-chan.
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
-Define *Library_ = OpenLibrary(#PB_Any, "Xors3D.dll")
 
+Define *Library_ = OpenLibrary(#PB_Any, "Xors3D.dll")
 Prototype.L _DLL_xGetPixels(buffer.L)
 Global DLL_xGetPixels._DLL_xGetPixels = GetFunction(*Library_, "_xGetPixels@4")
 Prototype.L _xImageColor(image.L, red.L, green.L, blue.L)
@@ -1416,3 +1416,7 @@ Prototype.L _DLL_xWritePixel(x.L, y.L, argb.L, buff.L)
 Global DLL_xWritePixel._DLL_xWritePixel = GetFunction(*Library_, "_xWritePixel@16")
 Prototype.L _DLL_xWritePixelFast(x.L, y.L, argb.L, buff.L)
 Global DLL_xWritePixelFast._DLL_xWritePixelFast = GetFunction(*Library_, "_xWritePixelFast@16")
+
+; IDE Options = PureBasic 5.30 (Windows - x86)
+; EnableUnicode
+; EnableXP

@@ -1,6 +1,6 @@
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
 ; Xors3D's high-level declarations.
-; Converted in 2010 by Chrono Syndrome.
+; Converted in 2010 by Guevara-chan.
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
 
 IncludeFile "Xors3d_decls.pbi"
@@ -971,4 +971,8 @@ EndMacro
 #KEY_LEFTARROW     = #KEY_LEFT
 #KEY_RIGHTARROW    = #KEY_RIGHT
 #KEY_DOWNARROW     = #KEY_DOWN
-#KEY_PGDN          = #KEY_NEXT 
+#KEY_PGDN          = #KEY_NEXT
+
+; IDE Options = PureBasic 5.30 (Windows - x86)
+; EnableUnicode
+; EnableXP
