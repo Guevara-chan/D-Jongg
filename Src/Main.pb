@@ -1,14 +1,14 @@
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
-; [D]-Jongg v0.7 (Beta/Demo)
+; [D]-Jongg v0.7 (Beta/Proto)
 ; Developed in 2010 by Guevara-chan.
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
 
-; TO.DO[
+;{ =[TO.DO]=
 ; Добавить неудаляемые кубы для сложности.
 ; Доработать вращение куба по вертикали и приблежение\удаление.
 ; Проверить проблемы с автообновлением DirectX под Vist'ой.
 ; Улучшить главное меню.
-; ]TO.DO
+;} {End/TO.DO}
 
 ; --Preparations--
 EnableExplicit
@@ -17,7 +17,7 @@ IncludeFile "Xors3d.pbi"
 EndMacro
 Prototype FontLoader(FileName.s, Flag, Dummy)
 
-;{ Definitions
+;{ [Definitions]
 ;{ --Constants--
 #Title        = "=[D]-Jongg="
 #ScreenWidth  = 800
@@ -178,9 +178,9 @@ Global NewList Dices.Dice()
 Global NewList History.Dice()
 Global Dim *DiceMatrix.Dice(#MaxField - 1, #MaxField - 1, #MaxField - 1)
 ;}
-;} EndDefinitions
+;} {End/Definitions}
 
-;{ Procedures
+;{ [Procedures]
 ;{ --Math & Logic--
 Macro GSin(Angle) ; Pseudo-procedure
 Sin(Radian(Angle))
@@ -913,9 +913,9 @@ System\AreaSize = FieldSize
 System\State = #sMenuToGame
 EndMacro
 ;}
-;} EndProcedures
+;} {End/Procedures}
 
-;{ Macros
+;{ [Macros]
 Macro Initialization()
 Define I ; Shared counter.
 SetCurrentDirectory("Media\")
@@ -1139,9 +1139,9 @@ System\CFrame = (System\CFrame + 1) % (#CFrames * 2 - 2)
 UpdateBlur()
 UpdateScreen()
 EndMacro
-;} EndMacros
+;} {End/Macros}
 
-; ==Main loop==
+;{ ==Main loop==
 Initialization()
 Repeat : SystemChecks()
 If System\Paused = #pActive
@@ -1152,8 +1152,10 @@ ElseIf WindowVisible(#MainWindow)
 RestoreFrame() ; Pause screen.
 EndIf
 ForEver
+; {End/loop}
 ; IDE Options = PureBasic 5.30 (Windows - x86)
-; Folding = h3-3f-f--
+; CursorPosition = 1
+; Folding = Ct-t-+-+9
 ; Markers = 1006
 ; EnableXP
 ; UseIcon = ..\Media\Dice.ico

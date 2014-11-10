@@ -2,7 +2,7 @@
 Title: [D]-Jongg
 Genre: Mahjongg-inspired puzzle
 Graphics: 3D (DirectX9)
-Version: v0.7 - Beta/Demo
+Version: v0.7 - Beta/Proto
 Dev. environment: PureBASIC v4.40
 Distribution: FreeWare OpenSource.
 *-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
