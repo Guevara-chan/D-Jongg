@@ -10,7 +10,7 @@
 -	DirectX automatical updater. To be sure, you know.
 
 ##/Requirements (tested)/:
-**Proc. Unit >=** Pentium 4, 2.0GHz  
+**Proc. Unit >=** Pentium IV, 2.0GHz  
 **R.A.M. >=** 2.0GB  
 **Hard Drive >=** 6MB  
 **GCard:** Radeon 9550+  
