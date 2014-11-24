@@ -3,7 +3,7 @@
 ; Converted in 2010 by Guevara-chan.
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
 
-IncludeFile "Xors3d_decls.pbi"
+IncludeFile "Xors3d[decls].pbi"
 
 ;Log levels
 #LOG_NO		= 5

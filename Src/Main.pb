@@ -47,7 +47,7 @@ Prototype FontLoader(FileName.s, Flag, Dummy)
 #MainWindow   = 0
 #NearScreen   = 2.4
 #SplashWindow = #MainWindow + 1
-#RedistURL    = "http://file1.softsea.com/Driver_Update/dxwebsetup.exe"
+#RedistURL    = "http://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe"
 #DBufferSize  = 1024 ; Downloading buffer's size.
 ;}
 ;{ --Enumerations--
@@ -1152,10 +1152,9 @@ ElseIf WindowVisible(#MainWindow)
 RestoreFrame() ; Pause screen.
 EndIf
 ForEver
-; {End/loop}
+;} {End/loop}
 ; IDE Options = PureBasic 5.30 (Windows - x86)
-; CursorPosition = 1
-; Folding = Ct-t-+-+9
+; Folding = Ct-t-+-++
 ; Markers = 1006
 ; EnableXP
 ; UseIcon = ..\Media\Dice.ico
