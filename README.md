@@ -17,7 +17,7 @@
 **Tech:** DX9, WinXP+, Pixel Shaders 2.0.  
 
 ## /Reassembling/:
-**[D]Jongg** is written completely in PureBasic v4.40, though compatible with v5.30.  
+**[D]Jongg** is written completely in PureBasic v4.40, though compatible with v5.30 LTS.  
 It relies on Xors3D abandonware engine, which is bundled as pre-patched DLL.  
 To compile project use 'Main.pb' as root sourcefile.  
 
