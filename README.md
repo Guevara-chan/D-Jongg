@@ -19,7 +19,7 @@
 
 ## /Reassembling/:
 **[D]Jongg** is written completely in *PureBasic v4.40*, though compatible with *5.2x (LTS)*.
-It relies on Xors3D abandonware engine, which is bundled as pre-patched DLL.  
+It relies on Xors3D abandonware engine, which is bundled here as pre-patched DLL.  
 To compile project just use 'Main.pb' as root sourcefile.  
 
 ## /Brief samples of JPEG quality/:
