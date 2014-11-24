@@ -10,11 +10,11 @@
 -	DirectX automatical updater. To be sure, you know.
 
 ##/Requirements (tested)/:
-**Proc. Unit >=** Pentium IV, 2.0GHz  
-**R.A.M. >=** 2.0GB  
-**Hard Drive >=** 6MB  
-**GCard:** Radeon 9550+  
-**Tech:** DX9, WinXP+, Pixel Shaders 2.0.  
+**Proc. Unit >=** *Pentium IV*, *2.0GHz*  
+**R.A.M. >=** *2.0GB*  
+**Hard Drive >=** *6*MB  
+**GCard:** *Radeon 9550*+  
+**Tech:** *DX9*, *WinXP+*, *Pixel Shaders 2.0*.  
 
 ## /Reassembling/:
 **[D]Jongg** is written completely in *PureBasic v4.40*, though compatible with *5.2x (LTS)*.
