@@ -12,8 +12,8 @@
 ##/Requirements (tested)/:
 **Proc. Unit >=** *Pentium IV*, *2.0GHz*  
 **R.A.M. >=** *2.0GB*  
-**Hard Drive >=** *6*MB  
-**GCard:** *Radeon 9550*+  
+**Hard Drive >=** *6MB*  
+**GCard:** *Radeon 9550+*  
 **Tech:** *DX9*, *WinXP+*, *Pixel Shaders 2.0*.  
 
 ## /Reassembling/:
