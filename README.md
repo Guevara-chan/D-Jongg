@@ -1,7 +1,7 @@
 ##/Sum/:
 **[D]-Jongg** is an experimental 3D puzzle game prototype, written in ~3 days as self-imposed challenge. It entrusts player with rather important task of dismantling giant space cube by removing matching pairs. Mostly reported as casual.  
 
-**Go get it @** http://gamejolt.com/games/d-jongg/download-distribution/1697/
+**Go get it @** http://gamejolt.com/games/d-jongg/download-distribution/1697/  
 **...Or try latest dev. build in project's** [DropBox] (https://www.dropbox.com/s/2zryfq5k5ljcyra/D-Jongg.zip)
 
 ##/Featurae/:
