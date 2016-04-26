@@ -1,5 +1,5 @@
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
-; [D]-Jongg v0.7 (Beta/Proto)
+; [D]-Jongg v0.71 (Beta/Proto)
 ; Developed in 2010 by Guevara-chan.
 ; *=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-*
 
@@ -16,6 +16,7 @@ Macro InitXors3D() ; Initializer.
 IncludeFile "Xors3d.pbi"
 EndMacro
 Prototype FontLoader(FileName.s, Flag, Dummy)
+UseZipPacker() ; Zip support for auto-updater.
 
 ;{ [Definitions]
 ;{ --Constants--
@@ -47,8 +48,9 @@ Prototype FontLoader(FileName.s, Flag, Dummy)
 #MainWindow   = 0
 #NearScreen   = 2.4
 #SplashWindow = #MainWindow + 1
-#RedistURL    = "http://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe"
+#RedistURL    = "https://dl.dropbox.com/s/1gg61p6p5otkbff/June%202010.zip"
 #DBufferSize  = 1024 ; Downloading buffer's size.
+#DXZip = 0
 ;}
 ;{ --Enumerations--
 Enumeration ; Animations
@@ -278,7 +280,7 @@ AddWindowTimer(#SplashWindow, 0, 500)
 EndMacro
 
 Macro DeleteTmp() ; Partializer
-DeleteFile(DXInstaller)
+DeleteFile(TempZip)
 EndMacro
 
 Macro CleanUp(Level = 1) ; Partializer
@@ -299,7 +301,7 @@ HideWindow(#SplashWindow, #True)
 ProcedureReturn MessageRequester(#Title, Msg, #MB_YESNO|#MB_ICONERROR)
 EndProcedure
 
-Procedure DownloadFile(DXInstaller.s) ; Thread.
+Procedure DownloadFile(TempZip.s) ; Thread.
 #DXFile = 1 : Define BytesRead
 Redownload: :Repeat : System\NetFileSize = RequestFileSize(#RedistURL)
 If System\NetFileSize ; Если удалось получить размер файла...
@@ -308,7 +310,7 @@ Define *FHandle = InternetOpenUrl_(*Network, #RedistURL, 0, 0, $80000000, 0)
 If *FHandle : Break : EndIf ; Начало закачки файла.
 EndIf : If FailReq(#FailMsg) = #IDYES : CleanUP() : Else : CleanUP(2) : EndIf
 ForEver : HideWindow(#SplashWindow, #False) ; Отображение счетчика прогресса.
-CreateFile(#DXFile, DXInstaller) ; Файл для закачки инсталлятора.
+CreateFile(#DXFile, TempZip) ; Файл для закачки инсталлятора.
 While System\NetProgress < System\NetFileSize ; Пока идет закачка...
 If InternetReadFile_(*FHandle, System\NetBuffer, #DBufferSize, @BytesRead)
 WriteData(#DXFile, System\NetBuffer, BytesRead) : System\NetProgress + BytesRead
@@ -328,26 +330,37 @@ Until FileSize(FileName) = -1
 ProcedureReturn FileName
 EndProcedure
 
+Procedure UnpackZip(ZipPath.s, OutPath.s)
+If OpenPack(#DXZip, ZipPath,  #PB_PackerPlugin_Zip) And ExaminePack(#DXZip)
+While NextPackEntry(#DXZip)
+Define FileName.s = PackEntryName(#DXZip), Dest.s = OutPath + "\" + GetPathPart(FileName)
+CreateDirectory(Dest) : UncompressPackFile(#DXZip, Dest + "\" + GetFilePart(FileName))
+Wend : ProcedureReturn #True
+EndIf
+EndProcedure
+
 Macro UpdateDX() ; Pseudo-procedure.
-Define DXInstaller.s = Space(#MAX_PATH)
-GetTempPath_(#MAX_PATH, @DXInstaller)
-DXInstaller = TempFileName(DXInstaller, "DirectX9 (", ").exe")
-GetTempFileName_(@DXInstaller, @"#DirectX9_", 0, @DXInstaller)
+Define TmpDir.s = GetTemporaryDirectory(), TempZip.s = Space(#MAX_PATH)
+GetTempFileName_(@TmpDir, @"DX9_", 0, @TempZip)
 OpenSplashWindow() ; Создание окна прогресса.
 DisableDebugger
-Define *Downloader = CreateThread(@DownloadFile(), @DXInstaller)
+Define *Downloader = CreateThread(@DownloadFile(), @TempZip)
 While ThreadID(*Downloader) 
 If WaitWindowEvent() = #PB_Event_Timer : ShowProgress() : EndIf
 Wend
 EnableDebugger
 CloseWindow(#SplashWindow)
-RunProgram(DXInstaller, "", "", #PB_Program_Wait)
+If UnpackZip(TempZip, TmpDir) : TmpDir + "\DX9\"
+RunProgram(TmpDir + "DXSETUP.exe", "", "", #PB_Program_Wait)
+DeleteDirectory(TmpDir, "*.*", #PB_FileSystem_Recursive | #PB_FileSystem_Force)
+Else : MessageRequester(#Title, "Failed to unpack DX9 archive", #MB_ICONERROR | #MB_OK) : End
+EndIf
 DeleteTmp()
 EndMacro
 
 Procedure RequestDownload(Title.s, Prefix.s, URL.s)
 Define FileSize = RequestFileSize(#RedistURL)
-Prefix + #CR$ + "Do you want to download it now ("
+Prefix + #CR$ + "Do you want to download update now ("
 If FileSize : Prefix + StrF(FileSize / (1024 * 1024), 1) + "Mb, " : EndIf
 Prefix + "connection required) ?"
 ProcedureReturn MessageRequester(Title, Prefix, #MB_YESNO | #MB_ICONERROR)
@@ -358,15 +371,11 @@ Procedure CheckDXVersion()
 #InvalidDX = "Unable to locate required revision (March 2008) of DirectX 9"
 System\NetBuffer = AllocateMemory(#DBufferSize)
 While OpenLibrary(#DXTest, "d3dx9_36.dll") = #Null
-If RequestDownload(#Title, #InvalidDX, #RedistURL) = #IDYES 
-UpdateDX() : Else : End
-EndIf
+If RequestDownload(#Title, #InvalidDX, #RedistURL) = #IDYES : UpdateDX() : Else : End : EndIf
 Wend : CloseLibrary(#DXTest)
 FreeMemory(System\NetBuffer)
 EndProcedure
 
-Define FixDir.s = GetPathPart(ProgramFilename()) ; На случай cmd и тому подобного.
-If FixDir <> GetTemporaryDirectory() : SetCurrentDirectory(FixDir) : EndIf
 CheckDXVersion() ; Should be here (fgj).
 InitXors3D() ; For further usage.
 ;}
@@ -1153,9 +1162,9 @@ RestoreFrame() ; Pause screen.
 EndIf
 ForEver
 ;} {End/loop}
-; IDE Options = PureBasic 5.30 (Windows - x86)
-; Folding = Ct-t-+-++
-; Markers = 1006
+; IDE Options = PureBasic 5.40 LTS (Windows - x86)
+; Folding = Ct-b-0-00
+; Markers = 1015
 ; EnableXP
 ; UseIcon = ..\Media\Dice.ico
 ; Executable = ..\[D]-Jongg.exe
