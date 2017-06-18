@@ -1,3 +1,5 @@
+![logo](https://m.gjcdn.net/game-thumbnail/300/1649-krytykym.jpg)
+
 ## /Sum/:
 **[D]-Jongg** is an experimental 3D puzzle game prototype, written in ~3 days as self-imposed challenge. It entrusts player with rather important task of dismantling giant space cube by removing matching pairs. Mostly reported as casual.  
 
