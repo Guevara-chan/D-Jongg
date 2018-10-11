@@ -5,7 +5,7 @@
 
 **Go get it @** http://gamejolt.com/games/d-jongg/download-distribution/1697/
 
-## /Featurae/:
+## /Featuræ/:
 -	Shader-powered visual FX to make your body ready.
 -	Three-state playfield volume selector to test your spirit.
 -	Scientifically-correct cosmic silence to enlighten your mind.
