@@ -15,7 +15,7 @@ EnableExplicit
 Macro InitXors3D() ; Initializer.
 IncludeFile "Xors3d.pbi"
 EndMacro
-Prototype FontLoader(FileName.s, Flag, Dummy)
+Prototype FontLoader(FileName.p-ascii, Flag, Dummy)
 UseZipPacker() ; Zip support for auto-updater.
 
 ;{ [Definitions]
@@ -938,7 +938,9 @@ System\Cursor = xLoadAnimImage("Cursor.png", 480 / #CFrames, 30, 0, #CFrames)
 xMaskImage(System\Cursor, 0, 0, 0)
 xHidePointer()
 ; -Fonts preparations-
-System\FontLoader = GetProcAddress_(GetModuleHandle_("GDI32.DLL"), "AddFontResourceExA")
+Define *proc = @"AddFontResourceExA"
+CompilerIf #PB_Compiler_Unicode : *proc = Ascii(PeekS(*proc)) : CompilerEndIf ; Let us hate Fred together.
+System\FontLoader = GetProcAddress_(GetModuleHandle_("GDI32.DLL"), *proc)
 System\MenuFont  = xLoadFont("Sylfaen", 9)
 System\GUIFont   = LoadFontFile("GUI_Font.ttf", "PlagueDeath"   , 30)
 System\TimerFont = LoadFontFile("Timer.otf"   , "Grunge serifia", 30)
@@ -1162,9 +1164,9 @@ RestoreFrame() ; Pause screen.
 EndIf
 ForEver
 ;} {End/loop}
-; IDE Options = PureBasic 5.40 LTS (Windows - x86)
+; IDE Options = PureBasic 5.70 LTS (Windows - x86)
 ; Folding = Ct-b-0-00
-; Markers = 1015
+; Markers = 1017
 ; EnableXP
 ; UseIcon = ..\Media\Dice.ico
 ; Executable = ..\[D]-Jongg.exe
