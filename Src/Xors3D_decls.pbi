@@ -645,7 +645,7 @@ Prototype.L _xEntityInView(ent.L, cam.L)
 Global xEntityInView._xEntityInView = GetFunction(*Library_, "_xEntityInView@8")
 Prototype.I _xEntityName(ent.L)
 Global xEntityName_._xEntityName = GetFunction(*Library_, "_xEntityName@4")
-Macro xEntityName(ent) : PeekS(xEntityName_(ent)) : EndMacro
+Macro xEntityName(ent) : PeekS(xEntityName_(ent), -1, #PB_Ascii) : EndMacro
 Prototype.L _xEntityOrder(ent.L, Order.L)
 Global xEntityOrder._xEntityOrder = GetFunction(*Library_, "_xEntityOrder@8")
 Prototype.L _xEntityPick(ent.L, range.F)
