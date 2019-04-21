@@ -20,7 +20,7 @@
 **Tech:** *DX9*, *WinXP+*, *Pixel Shaders 2.0*.  
 
 ## /Reassembling/:
-**[D]Jongg** is written completely in [PureBasic v4.40](http://purebasic.com), though compatible with *5.2x (LTS)*.  
+**[D]Jongg** is written completely in [PureBasic v4.40](http://purebasic.com), though compatible with *5.7x (LTS)*.  
 It relies on _Xors3D_ abandonware engine, which is bundled here as pre-patched DLL.  
 To rubuild - compile `Main.pb` as root sourcefile. 
  
