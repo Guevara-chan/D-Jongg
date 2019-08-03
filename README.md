@@ -24,7 +24,7 @@
 It relies on _Xors3D_ abandonware engine, which is bundled here as pre-patched DLL.  
 To rubuild - compile `Main.pb` as root sourcefile. 
  
-## /Brief samples of JPEG quality/:
+## /Brief sampling of JPEG quality/:
 ![](http://i.gjcdn.net/data/games/0/149/1649/screenshots/1649_73843.jpg)
 
 ![](http://i.gjcdn.net/data/games/0/149/1649/screenshots/1649_73844.jpg)
